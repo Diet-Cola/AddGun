@@ -1,12 +1,8 @@
 package com.programmerdan.minecraft.addgun.listeners;
 
-import java.util.concurrent.Executors;
-
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
-import com.biggestnerd.devotedpvp.ItemSafeEvent;
 import com.programmerdan.minecraft.addgun.AddGun;
 import com.programmerdan.minecraft.addgun.ammo.Bullet;
 import com.programmerdan.minecraft.addgun.ammo.Magazine;
@@ -22,7 +18,7 @@ public class CompatListener implements Listener {
 		plugin = AddGun.getPlugin();
 	}
 	
-	@EventHandler
+/*	@EventHandler
 	public void safeEventListener(ItemSafeEvent safe) {
 		ItemStack item = safe.getItem();
 		
@@ -49,5 +45,5 @@ public class CompatListener implements Listener {
 				safe.setValid();
 			}
 		}
-	}
+	}*/
 }

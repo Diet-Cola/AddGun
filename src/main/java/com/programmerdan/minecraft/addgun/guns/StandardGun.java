@@ -16,34 +16,23 @@ import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.craftbukkit.v1_12_R1.entity.CraftProjectile;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
-import org.bukkit.entity.SmallFireball;
-import org.bukkit.event.Event;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.metadata.MetadataValueAdapter;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.projectiles.ProjectileSource;
@@ -56,9 +45,6 @@ import com.programmerdan.minecraft.addgun.ammo.AmmoType;
 import com.programmerdan.minecraft.addgun.ammo.Bullet;
 import com.programmerdan.minecraft.addgun.ammo.Magazine;
 import com.programmerdan.minecraft.addgun.events.LoadGunEvent;
-
-import net.minecraft.server.v1_12_R1.BlockPosition;
-import net.minecraft.server.v1_12_R1.EntityProjectile;
 
 import static com.programmerdan.minecraft.addgun.guns.Utilities.getArmorType;
 import static com.programmerdan.minecraft.addgun.guns.Utilities.getInvXp;
@@ -606,7 +592,7 @@ public class StandardGun implements BasicGun {
 		hit.eject(); // eject the player
 		hit.getPassengers().forEach(e -> e.eject()); // and ejects your passengers
 		// make a new sound where it hits.
-		world.playSound(end, Sound.ENTITY_FIREWORK_BLAST, 1.0f, 1.5f);
+		world.playSound(end, Sound.ENTITY_FIREWORK_ROCKET_BLAST, 1.0f, 1.5f);
 		// make a splash
 		world.spawnParticle(Particle.SMOKE_NORMAL, end, 35, 0.1, 0.1, 0.1, 0.1);
 	}
@@ -627,7 +613,7 @@ public class StandardGun implements BasicGun {
 		World world = start.getWorld();
 		if (endOfFlight) {
 			// make a new sound where it hits.
-			world.playSound(end, Sound.ENTITY_FIREWORK_BLAST, 1.0f, 1.5f);
+			world.playSound(end, Sound.ENTITY_FIREWORK_ROCKET_BLAST, 1.0f, 1.5f);
 		}
 		if (type.getFireChance() > 0.0d) {
 			if (start != null) {
@@ -981,7 +967,7 @@ public class StandardGun implements BasicGun {
 						Bukkit.getScheduler().runTaskLater(AddGun.getPlugin(), new Runnable() {
 							@Override
 							public void run() {
-								EntityChangeBlockEvent bbe = new EntityChangeBlockEvent(bullet, block, Material.AIR, (byte) 0);
+								EntityChangeBlockEvent bbe = new EntityChangeBlockEvent(bullet, block, Material.AIR.createBlockData());
 								Bukkit.getPluginManager().callEvent(bbe);
 								if (!bbe.isCancelled()) {
 									AddGun.getPlugin().debug("Broke a {0}", block);
@@ -1453,7 +1439,7 @@ public class StandardGun implements BasicGun {
 				int xpNeeds = computeTotalXP(player) - this.xpDraw - bulletType.getXPDraw(); 
 
 				if (xpNeeds < 0) {
-					for (Map.Entry<Integer,? extends ItemStack> xpbottle : player.getInventory().all(Material.EXP_BOTTLE).entrySet()) {
+					for (Map.Entry<Integer,? extends ItemStack> xpbottle : player.getInventory().all(Material.EXPERIENCE_BOTTLE).entrySet()) {
 						ItemStack maybeXp = xpbottle.getValue();
 						if (maybeXp.getAmount() > 0) {
 							int xpInStack = maybeXp.getAmount() * AddGun.getPlugin().getXpPerBottle();
@@ -1645,7 +1631,7 @@ public class StandardGun implements BasicGun {
 	 * 
 	 * @param entity the entity shooting the gun
 	 * @param bulletType the type of bullet
-	 * @param item the gunItem, could be modified by this.
+	 * @param gun the gunItem, could be modified by this.
 	 * @param gunData the gunData
 	 * @param hand the hand holding the gun.
 	 * @return true if blowout, false otherwise
@@ -1692,7 +1678,7 @@ public class StandardGun implements BasicGun {
 		Object particleData = Particle.FLAME.getDataType();
 		loc.getWorld().spawnParticle(Particle.EXPLOSION_NORMAL, loc, 5, 0.1, 0.1, 0.1, 0.1);
 
-		loc.getWorld().playSound(loc, Sound.ENTITY_FIREWORK_LARGE_BLAST_FAR, 10.0f, 1.0f);
+		loc.getWorld().playSound(loc, Sound.ENTITY_FIREWORK_ROCKET_LARGE_BLAST_FAR, 10.0f, 1.0f);
 	}
 
 	/**

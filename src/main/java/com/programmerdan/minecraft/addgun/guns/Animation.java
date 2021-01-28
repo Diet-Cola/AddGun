@@ -4,13 +4,11 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import net.minecraft.server.v1_16_R3.PacketPlayOutPosition;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
-
-import net.minecraft.server.v1_12_R1.PacketPlayOutPosition;
-import net.minecraft.server.v1_12_R1.PacketPlayOutPosition.EnumPlayerTeleportFlags;
 
 /**
  * Instance this to interpolate knockback / returns for gun use.
@@ -22,8 +20,9 @@ public class Animation implements Runnable{
 	
 	public static double FRAME_DELAY = 34.0d;
 	
-	private static Set<EnumPlayerTeleportFlags> flags = new HashSet<>(Arrays.asList(EnumPlayerTeleportFlags.X, EnumPlayerTeleportFlags.Y, EnumPlayerTeleportFlags.Z,
-			EnumPlayerTeleportFlags.X_ROT, EnumPlayerTeleportFlags.Y_ROT));
+	private static Set<PacketPlayOutPosition.EnumPlayerTeleportFlags> flags = new HashSet<>(Arrays.asList(
+			PacketPlayOutPosition.EnumPlayerTeleportFlags.X, PacketPlayOutPosition.EnumPlayerTeleportFlags.Y, PacketPlayOutPosition.EnumPlayerTeleportFlags.Z,
+			PacketPlayOutPosition.EnumPlayerTeleportFlags.X_ROT, PacketPlayOutPosition.EnumPlayerTeleportFlags.Y_ROT));
 	
 	private Player player; // against pro-forma to store this ... doing it at my own risk.
 	

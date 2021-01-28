@@ -6,10 +6,9 @@ import java.util.UUID;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_12_R1.entity.CraftEntity;
-import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_16_R3.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_16_R3.inventory.CraftItemStack;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.InventoryHolder;
@@ -19,11 +18,11 @@ import org.bukkit.util.Vector;
 import com.programmerdan.minecraft.addgun.ArmorType;
 import com.programmerdan.minecraft.addgun.ammo.AmmoType;
 
-import net.minecraft.server.v1_12_R1.AxisAlignedBB;
-import net.minecraft.server.v1_12_R1.MovingObjectPosition;
-import net.minecraft.server.v1_12_R1.NBTBase;
-import net.minecraft.server.v1_12_R1.NBTTagCompound;
-import net.minecraft.server.v1_12_R1.Vec3D;
+import net.minecraft.server.v1_16_R3.AxisAlignedBB;
+import net.minecraft.server.v1_16_R3.MovingObjectPosition;
+import net.minecraft.server.v1_16_R3.NBTBase;
+import net.minecraft.server.v1_16_R3.NBTTagCompound;
+import net.minecraft.server.v1_16_R3.Vec3D;
 
 /**
  * Collection of static utilities to help navigate the world of guns.
@@ -51,7 +50,7 @@ public class Utilities {
 		if (hit == null) {
 			return origin;
 		} else {
-			return new Location(origin.getWorld(), hit.pos.x, hit.pos.y, hit.pos.z, origin.getYaw(), origin.getPitch());
+			return new Location(origin.getWorld(), hit.getPos().x, hit.getPos().y, hit.getPos().z, origin.getYaw(), origin.getPitch());
 		}
 	}
 	
@@ -62,12 +61,12 @@ public class Utilities {
 			return new HitDigest(HitPart.MISS, origin);
 		} else {
 			HitPart part = HitPart.MISS;
-			net.minecraft.server.v1_12_R1.Entity hitentity = ((CraftEntity) entity).getHandle();
+			net.minecraft.server.v1_16_R3.Entity hitentity = ((CraftEntity) entity).getHandle();
 			//double locX = hitentity.locX;
-			double locY = hitentity.locY;
+			double locY = hitentity.locY();
 			//double locZ = hitentity.locZ;
 			//double hitX = hit.pos.x;
-			double hitY = hit.pos.y;
+			double hitY = hit.getPos().y;
 			//double hitZ = hit.pos.z;
 			double height = entity.getHeight();
 			double head = hitentity.getHeadHeight();
@@ -84,7 +83,7 @@ public class Utilities {
 				part = HitPart.FEET;
 			}
 			
-			return new HitDigest(part, new Location(origin.getWorld(), hit.pos.x, hit.pos.y, hit.pos.z, origin.getYaw(), origin.getPitch()));
+			return new HitDigest(part, new Location(origin.getWorld(), hit.getPos().x, hit.getPos().y, hit.getPos().z, origin.getYaw(), origin.getPitch()));
 		}
 	}
 	
@@ -156,7 +155,7 @@ public class Utilities {
 		int total = 0;
 		if (inv != null) {
 			for (ItemStack item : inv) {
-				if (Material.EXP_BOTTLE.equals(item)) {
+				if (Material.EXPERIENCE_BOTTLE.equals(item)) {
 					total += item.getAmount();
 				}
 			}
@@ -174,11 +173,11 @@ public class Utilities {
 	 */
 	public static ArmorType getArmorType(Material material) {
 		switch(material) {
-		case IRON_BARDING:
+		case IRON_HORSE_ARMOR:
 			return ArmorType.IRON_BARDING;
-		case GOLD_BARDING:
+		case GOLDEN_HORSE_ARMOR:
 			return ArmorType.GOLD_BARDING;
-		case DIAMOND_BARDING:
+		case DIAMOND_HORSE_ARMOR:
 			return ArmorType.DIAMOND_BARDING;
 		case LEATHER_BOOTS:
 		case LEATHER_HELMET:
@@ -190,10 +189,10 @@ public class Utilities {
 		case IRON_CHESTPLATE:
 		case IRON_LEGGINGS:
 			return ArmorType.IRON;
-		case GOLD_BOOTS:
-		case GOLD_HELMET:
-		case GOLD_CHESTPLATE:
-		case GOLD_LEGGINGS:
+		case GOLDEN_BOOTS:
+		case GOLDEN_HELMET:
+		case GOLDEN_CHESTPLATE:
+		case GOLDEN_LEGGINGS:
 			return ArmorType.GOLD;
 		case DIAMOND_BOOTS:
 		case DIAMOND_HELMET:
@@ -230,7 +229,7 @@ public class Utilities {
 	 * @return
 	 */
 	public static Map<String, Object> getGunData(ItemStack gun) {
-		net.minecraft.server.v1_12_R1.ItemStack nmsGun = CraftItemStack.asNMSCopy(gun);
+		net.minecraft.server.v1_16_R3.ItemStack nmsGun = CraftItemStack.asNMSCopy(gun);
 		Map<String, Object> gunMap = new HashMap<String, Object>();
 		if (nmsGun.hasTag()) {
 			NBTTagCompound compound = nmsGun.getTag();
@@ -286,7 +285,7 @@ public class Utilities {
 	 * @return the ItemStack, augmented
 	 */
 	public static ItemStack updateGunData(ItemStack gun, Map<String, Object> update) {
-		net.minecraft.server.v1_12_R1.ItemStack nmsGun = CraftItemStack.asNMSCopy(gun);
+		net.minecraft.server.v1_16_R3.ItemStack nmsGun = CraftItemStack.asNMSCopy(gun);
 		NBTTagCompound compound = nmsGun.hasTag() ? nmsGun.getTag() : new NBTTagCompound();
 		NBTBase gunDataStub = compound.get("GunData");
 		NBTTagCompound gunData = null;
@@ -396,7 +395,7 @@ public class Utilities {
 	 * @return
 	 */
 	public static Map<String, Object> getMagazineData(ItemStack magazine) {
-		net.minecraft.server.v1_12_R1.ItemStack nmsMag = CraftItemStack.asNMSCopy(magazine);
+		net.minecraft.server.v1_16_R3.ItemStack nmsMag = CraftItemStack.asNMSCopy(magazine);
 		Map<String, Object> magazineMap = new HashMap<String, Object>();
 		if (nmsMag.hasTag()) {
 			NBTTagCompound compound = nmsMag.getTag();
@@ -428,7 +427,7 @@ public class Utilities {
 	 * @return the ItemStack, augmented
 	 */
 	public static ItemStack updateMagazineData(ItemStack magazine, Map<String, Object> update) {
-		net.minecraft.server.v1_12_R1.ItemStack nmsMagazine = CraftItemStack.asNMSCopy(magazine);
+		net.minecraft.server.v1_16_R3.ItemStack nmsMagazine = CraftItemStack.asNMSCopy(magazine);
 		NBTTagCompound compound = nmsMagazine.hasTag() ? nmsMagazine.getTag() : new NBTTagCompound();
 		NBTBase magDataStub = compound.get("MagazineData");
 		NBTTagCompound magData = null;

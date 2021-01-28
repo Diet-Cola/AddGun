@@ -120,7 +120,7 @@ public class Guns implements Listener {
 
 		Material block = event.getHitBlock().getType();
 		if (!block.isSolid() && block.isTransparent()) {
-			if (Material.LAVA.equals(block) || Material.STATIONARY_LAVA.equals(block)) {
+			if (Material.LAVA.equals(block)) {
 				// lava, it dies.
 			} else {
 				// respawn it

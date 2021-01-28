@@ -291,7 +291,7 @@ public class RailGun implements BasicGun, Listener {
 		int total = 0;
 		if (inv != null) {
 			for (ItemStack item : inv) {
-				if (Material.EXP_BOTTLE.equals(item)) {
+				if (Material.EXPERIENCE_BOTTLE.equals(item)) {
 					total += item.getAmount();
 				}
 			}
@@ -334,7 +334,7 @@ public class RailGun implements BasicGun, Listener {
 				int xpNeeds = computeTotalXP(player) - xpdraw; 
 
 				if (xpNeeds < 0) {
-					for (Map.Entry<Integer,? extends ItemStack> xpbottle : player.getInventory().all(Material.EXP_BOTTLE).entrySet()) {
+					for (Map.Entry<Integer,? extends ItemStack> xpbottle : player.getInventory().all(Material.EXPERIENCE_BOTTLE).entrySet()) {
 						ItemStack maybeXp = xpbottle.getValue();
 						if (maybeXp.getAmount() > 0) {
 							int xpInStack = maybeXp.getAmount() * AddGun.getPlugin().getXpPerBottle();
@@ -553,7 +553,7 @@ public class RailGun implements BasicGun, Listener {
 				Location loc = bullet.getLocation().clone();
 				travelPaths.put(bullet.getUniqueId(), loc);
 				loc.getWorld().spawnParticle(Particle.FLAME, loc, 25);
-				loc.getWorld().playSound(loc, Sound.ENTITY_FIREWORK_LARGE_BLAST_FAR, 10.0f, 2.0f);
+				loc.getWorld().playSound(loc, Sound.ENTITY_FIREWORK_ROCKET_LARGE_BLAST_FAR, 10.0f, 2.0f);
 				player.setCooldown(Material.DIAMOND_HOE, (int) (cooldown / 50));
 				item.setDurability((short) (item.getDurability() + damagePerUse));
 				player.getInventory().setItemInMainHand(item);
@@ -594,7 +594,7 @@ public class RailGun implements BasicGun, Listener {
 		World world = end.getWorld();
 
 		// make a new sound where it hits.
-		world.playSound(end, Sound.ENTITY_FIREWORK_BLAST, 1.0f, 1.5f);
+		world.playSound(end, Sound.ENTITY_FIREWORK_ROCKET_LARGE_BLAST_FAR, 1.0f, 1.5f);
 		
 		// make a splash
 		world.spawnParticle(Particle.BLOCK_DUST, end.clone().add( 0.5, 0.0, 0.0), 5);
@@ -644,7 +644,7 @@ public class RailGun implements BasicGun, Listener {
 		World world = end.getWorld();
 
 		// make a new sound where it hits.
-		world.playSound(end, Sound.ENTITY_FIREWORK_BLAST, 1.0f, 1.5f);
+		world.playSound(end, Sound.ENTITY_FIREWORK_ROCKET_BLAST, 1.0f, 1.5f);
 		// make a splash
 		world.spawnParticle(Particle.BLOCK_DUST, end, 35);
 

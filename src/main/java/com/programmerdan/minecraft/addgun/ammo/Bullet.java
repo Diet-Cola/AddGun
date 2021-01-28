@@ -447,8 +447,6 @@ public class Bullet implements Comparable<Bullet>, Serializable {
 			return Fireball.class;
 		case FISHING_HOOK:
 			return FishHook.class;
-		case LINGERING_POTION:
-			return LingeringPotion.class;
 		case LLAMA_SPIT:
 			return LlamaSpit.class;
 		case SHULKER_BULLET:
@@ -463,8 +461,6 @@ public class Bullet implements Comparable<Bullet>, Serializable {
 			return SplashPotion.class;
 		case THROWN_EXP_BOTTLE:
 			return ThrownExpBottle.class;
-		case TIPPED_ARROW:
-			return TippedArrow.class;
 		case WITHER_SKULL:
 			return WitherSkull.class;
 		case EXPERIENCE_ORB:
@@ -478,7 +474,6 @@ public class Bullet implements Comparable<Bullet>, Serializable {
 		case BOAT:
 		case CAVE_SPIDER:
 		case CHICKEN:
-		case COMPLEX_PART:
 		case COW:
 		case CREEPER:
 		case DONKEY:
@@ -516,7 +511,7 @@ public class Bullet implements Comparable<Bullet>, Serializable {
 		case PAINTING:
 		case PARROT:
 		case PIG:
-		case PIG_ZOMBIE:
+		case ZOMBIFIED_PIGLIN:
 		case PLAYER:
 		case POLAR_BEAR:
 		case RABBIT:
@@ -534,7 +529,6 @@ public class Bullet implements Comparable<Bullet>, Serializable {
 		case VEX:
 		case VILLAGER:
 		case VINDICATOR:
-		case WEATHER:
 		case WITCH:
 		case WITHER:
 		case WITHER_SKELETON:
