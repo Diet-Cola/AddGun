@@ -3,6 +3,7 @@ package com.programmerdan.minecraft.addgun.guns;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.Optional;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -45,17 +46,17 @@ public class Utilities {
 	 */
 	public static Location approximateHitBoxLocation(Location origin, Vector velocity, Entity entity) {
 		
-		MovingObjectPosition hit = hitInformation(origin, velocity, entity);
+		Vec3D hit = hitInformation(origin, velocity, entity);
 
 		if (hit == null) {
 			return origin;
 		} else {
-			return new Location(origin.getWorld(), hit.getPos().x, hit.getPos().y, hit.getPos().z, origin.getYaw(), origin.getPitch());
+			return new Location(origin.getWorld(), hit.getX(), hit.getY(), hit.getZ(), origin.getYaw(), origin.getPitch());
 		}
 	}
 	
 	public static HitDigest detailedHitBoxLocation(Location origin, Vector velocity, Entity entity) {
-		MovingObjectPosition hit = hitInformation(origin, velocity, entity);
+		Vec3D hit = hitInformation(origin, velocity, entity);
 		
 		if (hit == null) {
 			return new HitDigest(HitPart.MISS, origin);
@@ -66,7 +67,7 @@ public class Utilities {
 			double locY = hitentity.locY();
 			//double locZ = hitentity.locZ;
 			//double hitX = hit.pos.x;
-			double hitY = hit.getPos().y;
+			double hitY = hit.getY();
 			//double hitZ = hit.pos.z;
 			double height = entity.getHeight();
 			double head = hitentity.getHeadHeight();
@@ -83,7 +84,7 @@ public class Utilities {
 				part = HitPart.FEET;
 			}
 			
-			return new HitDigest(part, new Location(origin.getWorld(), hit.getPos().x, hit.getPos().y, hit.getPos().z, origin.getYaw(), origin.getPitch()));
+			return new HitDigest(part, new Location(origin.getWorld(), hit.getX(), hit.getY(), hit.getZ(), origin.getYaw(), origin.getPitch()));
 		}
 	}
 	
@@ -97,7 +98,7 @@ public class Utilities {
 	 * @param entity The entity to test intersection against.
 	 * @return a MovingObjectPosition with intersection details, or null.
 	 */
-	public static MovingObjectPosition hitInformation(Location origin, Vector velocity, Entity entity) {
+	public static Vec3D hitInformation(Location origin, Vector velocity, Entity entity) {
 		
 		// we have the bullet's last tick location, its velocity, and the barycenter of the object it hit, and that
 		// object's hitbox. We also know for sure that the object was intersected with.
@@ -105,7 +106,8 @@ public class Utilities {
 		Vec3D origLocation = new Vec3D(origin.getX(), origin.getY(), origin.getZ());
 		Vec3D origVector = new Vec3D(origin.getX() + velocity.getX(), origin.getY() + velocity.getY(), origin.getZ() + velocity.getZ());
 		
-		return boundingBox.b(origLocation, origVector);
+		Optional<Vec3D> intersectLoc = boundingBox.b(origLocation, origVector);
+		return intersectLoc.isPresent() ? intersectLoc.get() : null;
 	}
 
 
